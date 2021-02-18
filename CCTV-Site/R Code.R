@@ -1,63 +1,63 @@
-install.packages("ggmap") #Áöµµ ±×·¡ÇÁ ÆĞÅ°Áö
-install.packages("readxl") # excel ÆĞÅ°Áö
-setwd("C:/Users/ljm51/Desktop/20155151ÀÌÁ¤¹Î/20155151ÀÌÁ¤¹Î") #ÀÛ¾÷ µğ·ºÅä¸®
+install.packages("ggmap") #ì§€ë„ ê·¸ë˜í”„ íŒ¨í‚¤ì§€
+install.packages("readxl") # excel íŒ¨í‚¤ì§€
+setwd("C:/Users/ljm51/Desktop/20155151ì´ì •ë¯¼/20155151ì´ì •ë¯¼") #ì‘ì—… ë””ë ‰í† ë¦¬
 
 library(ggmap)
 library(data.table)
 library(tidyverse)
 
-#±¸±Û¸Ê API È¹µæ
-register_google(key = "AIzaSyBymIq_W1R4vkYA0J0GS0YLAilXVgzXdIk") #ÅØ½ºÆ® º¹»ç
-has_google_key() #api ÀÎÁõ
-library(readxl) # excel load¸¦ À§ÇÑ ÆĞÅ°Áö
-cctv_list <- list() # empty ¸®½ºÆ® ¼±¾ğ
-excel_sheets(path = "°æ»ó³²µµ_ÇÕÃµ±º_¾î¸°ÀÌº¸È£±¸¿ª_20180806.xls") #excelÀÇ sheet È®ÀÎ
+#êµ¬ê¸€ë§µ API íšë“
+register_google(key = "AIzaSyBymIq_W1R4vkYA0J0GS0YLAilXVgzXdIk") #í…ìŠ¤íŠ¸ ë³µì‚¬
+has_google_key() #api ì¸ì¦
+library(readxl) # excel loadë¥¼ ìœ„í•œ íŒ¨í‚¤ì§€
+cctv_list <- list() # empty ë¦¬ìŠ¤íŠ¸ ì„ ì–¸
+excel_sheets(path = "ê²½ìƒë‚¨ë„_í•©ì²œêµ°_ì–´ë¦°ì´ë³´í˜¸êµ¬ì—­_20180806.xls") #excelì˜ sheet í™•ì¸
 
-#excelÀÌ sheet ¼ö ¸¸Å­ ¹İº¹ ÁøÇà, listÀÇ ¿ä¼Ò·Î °¢ sheet¸¦ µ¥ÀÌÅÍÇÁ·¹ÀÓÀ¸·Î ÀúÀå
-for(index in 1:length(excel_sheets(path = "°æ»ó³²µµ_ÇÕÃµ±º_¾î¸°ÀÌº¸È£±¸¿ª
+#excelì´ sheet ìˆ˜ ë§Œí¼ ë°˜ë³µ ì§„í–‰, listì˜ ìš”ì†Œë¡œ ê° sheetë¥¼ ë°ì´í„°í”„ë ˆì„ìœ¼ë¡œ ì €ì¥
+for(index in 1:length(excel_sheets(path = "ê²½ìƒë‚¨ë„_í•©ì²œêµ°_ì–´ë¦°ì´ë³´í˜¸êµ¬ì—­
                                    _20180806.xls"))){
-  cctv_list[[index]] <- read_xls(path = "°æ»ó³²µµ_ÇÕÃµ±º_¾î¸°ÀÌº¸È£±¸¿ª_20180806.xls")
+  cctv_list[[index]] <- read_xls(path = "ê²½ìƒë‚¨ë„_í•©ì²œêµ°_ì–´ë¦°ì´ë³´í˜¸êµ¬ì—­_20180806.xls")
   }
-cctv_list_df <- cctv_list%>%bind_rows()%>%as_tibble() #bind rows listÀÇ µ¥ÀÌÅÍÇÁ·¹ÀÓÀÇ row¸¦ ÇÏ³ªÀÇ µ¥ÀÌÅÍÇÁ·¹ÀÓÀ¸·Î º¯È¯
+cctv_list_df <- cctv_list%>%bind_rows()%>%as_tibble() #bind rows listì˜ ë°ì´í„°í”„ë ˆì„ì˜ rowë¥¼ í•˜ë‚˜ì˜ ë°ì´í„°í”„ë ˆì„ìœ¼ë¡œ ë³€í™˜
 str(cctv_list_df)
 
-#ÇÊ¿äÇÑ ¿­¸¸ ÃßÃâ
-cctv_list_df_lat_lon <- cctv_list_df%>%select(., ¼ÒÀçÁöµµ·Î¸íÁÖ¼Ò,À§µµ,°æµµ )%>%
-  mutate(., À§µµ = as.numeric(À§µµ), °æµµ = as.numeric(°æµµ))
-str(cctv_list_df_lat_lon) #mutate¸¦ ÀÌ¿ëÇÏ¿© ¿­ÀÇ typeÀ» º¯°æ
+#í•„ìš”í•œ ì—´ë§Œ ì¶”ì¶œ
+cctv_list_df_lat_lon <- cctv_list_df%>%select(., ì†Œì¬ì§€ë„ë¡œëª…ì£¼ì†Œ,ìœ„ë„,ê²½ë„ )%>%
+  mutate(., ìœ„ë„ = as.numeric(ìœ„ë„), ê²½ë„ = as.numeric(ê²½ë„))
+str(cctv_list_df_lat_lon) #mutateë¥¼ ì´ìš©í•˜ì—¬ ì—´ì˜ typeì„ ë³€ê²½
 
-#x11, µ¥ÀÌÅÍÀÇ Å©±â¸¦ 20,000±îÁö ÀÎµ¦½ÌÇÏ¿© »ç¿ë
-qmap(title = "20155151", location = "°æ³²", zoom = 6, maptype = 'satellite', source = 'google') +
-  geom_point(data = cctv_list_df_lat_lon[1:20000,], aes(x = °æµµ, y = À§µµ), color = 'red', size = 2, alpha = 0.5) + ggtitle("°æ»ó³²µµ_ÇÕÃµ±º_¾î¸°ÀÌº¸È£±¸¿ª_cctv_20155151")
+#x11, ë°ì´í„°ì˜ í¬ê¸°ë¥¼ 20,000ê¹Œì§€ ì¸ë±ì‹±í•˜ì—¬ ì‚¬ìš©
+qmap(title = "20155151", location = "ê²½ë‚¨", zoom = 6, maptype = 'satellite', source = 'google') +
+  geom_point(data = cctv_list_df_lat_lon[1:20000,], aes(x = ê²½ë„, y = ìœ„ë„), color = 'red', size = 2, alpha = 0.5) + ggtitle("ê²½ìƒë‚¨ë„_í•©ì²œêµ°_ì–´ë¦°ì´ë³´í˜¸êµ¬ì—­_cctv_20155151")
 
 
-#ggtitleÀ» ÀÌ¿ëÇÑ Å¸ÀÌÆ² ¼³Á¤, theme¸¦ ÀÌ¿ëÇÑ Å¸ÀÌÆ² ¹× legend ¼³Á¤
+#ggtitleì„ ì´ìš©í•œ íƒ€ì´í‹€ ì„¤ì •, themeë¥¼ ì´ìš©í•œ íƒ€ì´í‹€ ë° legend ì„¤ì •
 qmap(location = center, zoom = 15, maptype = 'hybrid', source = 'google') +
-  geom_point(data = cctv_list_chunchen, aes(x = °æµµ, y = À§µµ, color = CCTV¼³Ä¡¿©ºÎ), size = 4, alpha = 0.5) +
-  ggtitle("°æ»ó³²µµ_ÇÕÃµ±º_¾î¸°ÀÌº¸È£±¸¿ª_cctv_20155151") +
+  geom_point(data = cctv_list_chunchen, aes(x = ê²½ë„, y = ìœ„ë„, color = CCTVì„¤ì¹˜ì—¬ë¶€), size = 4, alpha = 0.5) +
+  ggtitle("ê²½ìƒë‚¨ë„_í•©ì²œêµ°_ì–´ë¦°ì´ë³´í˜¸êµ¬ì—­_cctv_20155151") +
   theme(legend.text = element_text(face = "bold",size = 15,family = "BM HANNA Pro"),
         legend.title = element_text(size = 15, face = "bold", family = "BM HANNA Pro"),
         legend.position = "top",
         plot.title = element_text(family = "BM HANNA
         Pro", face = "bold", hjust = 0.5, size = 25)) +
-        facet_wrap(~CCTV¼³Ä¡¿©ºÎ)
+        facet_wrap(~CCTVì„¤ì¹˜ì—¬ë¶€)
 
 
 library(leaflet)
 
-#addTiles() apiÈ£Ãâ, setView() ÁöÁ¤
+#addTiles() apií˜¸ì¶œ, setView() ì§€ì •
 m <- leaflet() %>% addTiles() %>%
   setView(lng = 128.315457, lat = 35.557367, zoom = 16)
 m
 
-#leaflect¿É¼Ç Ãß°¡
-leaflet(cctv_list_chunchen) %>% addTiles() %>%
+#leaflectì˜µì…˜ ì¶”ê°€
+leaflet(cctv_list_hapcheon) %>% addTiles() %>%
   setView(lng = 128.315457, lat = 35.557367, zoom = 12)%>%
   addRectangles(lng1 =128.281212,lat1=35.545991,
                 lng2 =128.315457,lat2=35.557367,
-                fillColor ="transparent") %>% #À§µµ °æµµ ¼³Á¤ ÈÄ Á÷»ç°¢ÇüÀ» ±×¸°´Ù.
-  addCircleMarkers(lat = ~À§µµ, lng = ~°æµµ, color = ~pal(½Ã¼³Á¾·ù), popup = ~½Ã¼³Á¾
-                   ·ù) %>%
-  addLegend(pal = pal, values = cctv_list_chunchen$CCTV¼³Ä¡¿©ºÎ, opacity = 0.7,
-            title = "CCTV¼³Ä¡¿©ºÎ_20155151", position = "bottomright") %>%
+                fillColor ="transparent") %>% #ìœ„ë„ ê²½ë„ ì„¤ì • í›„ ì§ì‚¬ê°í˜•ì„ ê·¸ë¦°ë‹¤.
+  addCircleMarkers(lat = ~ìœ„ë„, lng = ~ê²½ë„, color = ~pal(ì‹œì„¤ì¢…ë¥˜), popup = ~ì‹œì„¤ì¢…
+                   ë¥˜) %>%
+  addLegend(pal = pal, values = cctv_list_hapcheon$CCTVì„¤ì¹˜ì—¬ë¶€, opacity = 0.7,
+            title = "CCTVì„¤ì¹˜ì—¬ë¶€_20155151", position = "bottomright") %>%
   addProviderTiles(providers$OpenStreetMap) %>% addMiniMap()
